@@ -1,0 +1,58 @@
+:root {
+  --primary-text:         #000000 !important;
+  --primary-text-color:   #000000 !important;
+  --secondary-text:       #000000 !important;
+  --secondary-text-color: #000000 !important;
+}
+
+nav {
+  background-color: var(--primary);
+}
+
+.page-footer {
+  background-color: var(--primary);
+}
+
+[type="checkbox"]:checked+span:not(.lever):before {
+  border-right-color: var(--secondary);
+  border-bottom-color: var(--secondary);
+}
+
+.btn:hover, .btn-large:hover, .btn-small:hover {
+  background-color: var(--secondary-light);
+}
+
+.switch label input[type=checkbox]:checked+.lever {
+  background-color: var(--secondary-light);
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+  background-color: var(--secondary);
+}
+
+.btn, .btn-large, .btn-small {
+  background-color: var(--secondary);
+}
+
+html {
+  background-color: var(--primary);
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+.page-footer {
+  padding-top: 0;
+}
+
+.nav-container {
+  padding: 0px 15px;
+}
