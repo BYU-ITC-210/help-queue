@@ -6,7 +6,8 @@ let nonce
 let helpUsers = [
   {
     name: "No admin",
-    zoom: "..."
+    zoom: "...",
+    subject: "No admin"
   },
 ]
 
@@ -32,6 +33,7 @@ function getSmallUser(user) {
   return {
     name: user.name,
     zoom: user.zoom,
+    subject: user.subject
   }
 }
 
@@ -87,6 +89,7 @@ router.put("/admin/logout", async (req, res) => {
 // Add to help         | put  | /help/add
 router.put("/help/add", async (req, res) => {
   let name = req.body.name
+  let subject = req.body.subject
   if (passoffUsers.some(item => item.name === name)) {
     res.sendStatus(500)
     return

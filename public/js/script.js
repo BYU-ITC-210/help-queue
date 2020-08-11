@@ -8,6 +8,7 @@ let app = new Vue({
     helpUsers: [],
     passoffUsers: [],
     set: false,
+    subject: "",
     user: {
       zoom: "",
       name: "",
@@ -111,7 +112,7 @@ let app = new Vue({
       url = "api/help/add"
       fetch(url, {
         method: "PUT",
-        body: JSON.stringify(this.user),
+        body: JSON.stringify({...this.user, subject: this.subject}),
         headers: {"Content-Type": "application/json"}
       }).then(response => {
         socket.emit("updateList")

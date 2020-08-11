@@ -43,27 +43,37 @@
         </li>
 
         <li v-for="helpUser in helpUsers" class="collection-item">
-          {{ helpUser.name }}
+          <span>{{ helpUser.name }}</span>
 
-          <% if (admin) { %>
 
-          <a class="secondary-content" href="#" v-on:click="adminRemoveHelp(helpUser.name)">
-            remove
-          </a>
 
-          <% } else { %>
 
-          <a v-if="helpUser.name === user.name" class="secondary-content" href="#" v-on:click="removeHelp()">
-            remove
-          </a>
-
-          <% } %>
-
+          <span class="secondary-content">
+            <!-- <span class="subject">{{ helpUser.subject }}</span> &nbsp; -->
+            <span v-if="helpUser.subject.length < 20" class="subject">
+              {{ helpUser.subject }}
+            </span>
+            <div v-else class="tooltip subject">{{ helpUser.subject.substr(0, 20) }}...
+              <!-- <span class="tooltiptext">{{ helpUser.subject }}</span> -->
+              <span class="tooltiptext">{{ helpUser.subject }}</span>
+            </div> &nbsp;
+            <% if (admin) { %>
+            <a href="#" v-on:click="adminRemoveHelp(helpUser.name)">remove</a>
+            <% } else { %>
+            <a v-if="helpUser.name === user.name" class="secondary-content" href="#" v-on:click="removeHelp()">
+              remove
+            </a>
+            <% } %>
+          </span>
         </li>
 
         <% if (!admin) { %>
         <li v-if="!onList" class="collection-item">
-          <a href="#" v-on:click="joinHelp()">Join Help List</a>
+          <!-- <a href="#" v-on:click="joinHelp()">Join Help List</a> -->
+          <form class="row" v-on:submit.prevent="joinHelp">
+            <input class="col s6" required v-model="subject" placeholder="Subect">
+            <button class="join col s6" type="submit">Join Help List</button>
+          </form>
         </li>
         <% } %>
 
@@ -74,7 +84,8 @@
   <div v-else>
     <form class="row" v-on:submit.prevent="setup">
       <input required v-model="user.name" placeholder="Full Name">
-      <input required v-model="user.zoom" placeholder="Zoom Personal Meeting Id (i.e. https://byu.zoom.us/j/8833699865)">
+      <input required v-model="user.zoom"
+        placeholder="Zoom Personal Meeting Id (i.e. https://byu.zoom.us/j/0123456789)">
       <button type="submit" class="btn waves-effect">Link</button>
     </form>
     <a href="tutorial">How do I get my Zoom Meeting Id?</a>
@@ -87,17 +98,17 @@
     <div class="modal-content">
       <h4>Currently being helped!</h4>
       <p>You are currently being helped by <strong> {{ ta.name }} </strong> </p>
-      <p>You can join their Zoom meeting at <a target="_blank" :href="ta.zoom"> <strong> {{ ta.zoom }} </strong> </a> </p>
+      <p>You can join their Zoom meeting at <a target="_blank" :href="ta.zoom"> <strong> {{ ta.zoom }} </strong> </a>
+      </p>
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-close waves-effect btn-flat">Close</a>
     </div>
   </div>
 
-</div> <!-- app -->
+</div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 <script src="js/script.js"></script>
-
