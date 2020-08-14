@@ -3,10 +3,11 @@ let app = new Vue({
 
   // data
   data: {
-
+    max_subject_len: 20,
     error_message: "",
     helpUsers: [],
     passoffUsers: [],
+    admins: [],
     set: false,
     subject: "",
     user: {
@@ -49,10 +50,24 @@ let app = new Vue({
       })
     },
 
+    // getPassoffList()
+    getAdminList() {
+      url = "api/admins"
+      fetch(url).then(response => {
+        console.log(response.text)
+        return response.json()
+      }).then(json => {
+        this.admins = json
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+
     // getLists()
     getLists() {
       this.getHelpList()
       this.getPassoffList()
+      this.getAdminList()
     },
 
     // adminRemoveHelp()
@@ -107,6 +122,27 @@ let app = new Vue({
       })
     },
 
+    adminRemoveAdmin(name) {
+      this.admins.map(item => {
+        if (item.name === name) {
+          console.info(`Removing %c${item.name} %cfrom Admin List`, 'font-weight: bold;', '')
+        }
+      })
+      url = "api/admins/remove"
+      fetch(url, {
+        method: "PUT",
+        body: JSON.stringify({name: name}),
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {
+        if (response.status !== 200) {
+          throw new Error("Bad remove")
+        }
+        socket.emit("updateList")
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+
     // joinHelp()
     joinHelp() {
       url = "api/help/add"
@@ -132,6 +168,20 @@ let app = new Vue({
       }).then(response => {
         socket.emit("updateList")
         socket.emit("playSound")
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+
+    // joinPassoff()
+    joinAdmin() {
+      url = "api/admins/add"
+      fetch(url, {
+        method: "PUT",
+        body: JSON.stringify(this.user),
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {
+        socket.emit("updateList")
       }).catch(err => {
         console.error(err)
       })
@@ -234,6 +284,10 @@ let app = new Vue({
 
     onPassoffList: function() {
       return this.passoffUsers.some(item => item.name === this.user.name)
+    },
+
+    onAdminList: function() {
+      return this.admins.some(item => item.name === this.user.name)
     },
 
     onList: function() {

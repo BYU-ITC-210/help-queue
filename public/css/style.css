@@ -111,3 +111,7 @@ main {
   border-style: solid;
   border-color: black transparent transparent transparent;
 }
+
+.container.wide {
+  width: 90%;
+}

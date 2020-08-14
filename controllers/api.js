@@ -7,12 +7,20 @@ let helpUsers = [
   {
     name: "No admin",
     zoom: "...",
-    subject: "No admin"
+    subject: ""
   },
 ]
 
 // passoffUsers
 let passoffUsers = [
+  {
+    name: "No admin",
+    zoom: "..."
+  },
+]
+
+// passoffUsers
+let admins = [
   {
     name: "No admin",
     zoom: "..."
@@ -117,6 +125,16 @@ router.put("/passoff/add", async (req, res) => {
   res.sendStatus(200)
 })
 
+router.put("/admins/add", async (req, res) => {
+  let name = req.body.name
+  if (admins.some(item => item.name === name)) {
+    res.sendStatus(500)
+    return
+  }
+  admins.push(getSmallUser(req.body))
+  res.sendStatus(200)
+})
+
 // Remove from help    | put  | /help/remove
 router.put("/help/remove", async (req, res) => {
   let name = req.body.name
@@ -131,6 +149,12 @@ router.put("/passoff/remove", async (req, res) => {
   res.sendStatus(200)
 })
 
+router.put("/admins/remove", async (req, res) => {
+  let name = req.body.name
+  admins = admins.filter(item => item.name !== name)
+  res.sendStatus(200)
+})
+
 // Get help list       | get  | /help
 router.get("/help", async (req, res) => {
   res.send(JSON.stringify(helpUsers))
@@ -139,6 +163,10 @@ router.get("/help", async (req, res) => {
 // Get passoff list       | get  | /passoff
 router.get("/passoff", async (req, res) => {
   res.send(JSON.stringify(passoffUsers))
+})
+
+router.get("/admins", async (req, res) => {
+  res.send(JSON.stringify(admins))
 })
 
 module.exports = router
