@@ -9,6 +9,7 @@ let app = new Vue({
     passoffUsers: [],
     admins: [],
     set: false,
+    in_lab: false,
     subject: "",
     user: {
       zoom: "",
@@ -229,7 +230,7 @@ let app = new Vue({
         zoom: zoom,
       }
       this.set = false
-      if (name && zoom) {
+      if (name) {
         this.set = true
       }
     },

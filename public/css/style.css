@@ -94,14 +94,15 @@ main {
   visibility: visible;
 }
 
-.tooltip .tooltiptext {
+.tooltip .tooltiptext { /* black box of tooltip */
   width: 120px;
   bottom: 100%;
   left: 50%;
   margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  padding: 0px 5px;
 }
 
-.tooltip .tooltiptext::after {
+.tooltip .tooltiptext::after { /* arrow beneath */
   content: " ";
   position: absolute;
   top: 100%; /* At the bottom of the tooltip */
