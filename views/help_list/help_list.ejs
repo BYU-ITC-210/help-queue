@@ -4,10 +4,8 @@
   </li>
 
   <li v-for="helpUser in helpUsers" class="collection-item">
-    <span>{{ helpUser.name }}</span>
-
-
-
+    <span v-if="admin && helpUser.in_lab && user.in_lab" class="in-lab">{{ helpUser.name }}</span>
+    <span v-else>{{ helpUser.name }}</span>
 
     <span class="secondary-content">
       <!-- <span class="subject">{{ helpUser.subject }}</span> &nbsp; -->

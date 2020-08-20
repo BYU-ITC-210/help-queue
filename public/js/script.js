@@ -9,15 +9,16 @@ let app = new Vue({
     passoffUsers: [],
     admins: [],
     set: false,
-    in_lab: false,
     subject: "",
     user: {
       zoom: "",
       name: "",
+      in_lab: false,
     },
     ta: {
       name: "The TA",
       zoom: "example.com",
+      in_lab: false,
     },
     admin: false,
     audio: new Audio('audio/chime.mp3'),
@@ -55,7 +56,6 @@ let app = new Vue({
     getAdminList() {
       url = "api/admins"
       fetch(url).then(response => {
-        console.log(response.text)
         return response.json()
       }).then(json => {
         this.admins = json
@@ -147,6 +147,7 @@ let app = new Vue({
     // joinHelp()
     joinHelp() {
       url = "api/help/add"
+      console.log(this.user)
       fetch(url, {
         method: "PUT",
         body: JSON.stringify({...this.user, subject: this.subject}),
@@ -223,14 +224,9 @@ let app = new Vue({
     },
 
     getStorage() {
-      name = localStorage.getItem("name") || ""
-      zoom = localStorage.getItem("zoom") || ""
-      this.user = {
-        name: name,
-        zoom: zoom,
-      }
+      this.user = JSON.parse(localStorage.getItem("user")) || { name: "", zoom: "", in_lab: false }
       this.set = false
-      if (name) {
+      if (this.user.name) {
         this.set = true
       }
     },
@@ -262,8 +258,7 @@ let app = new Vue({
     },
 
     setStorage() {
-      localStorage.setItem("name", this.user.name)
-      localStorage.setItem("zoom", this.user.zoom)
+      localStorage.setItem("user", JSON.stringify(this.user))
     },
 
     setup() {
@@ -295,6 +290,10 @@ let app = new Vue({
       return this.onHelpList || this.onPassoffList
     },
 
+    in_lab: function() {
+      return this.user.in_lab
+    }
+
   },
 
   // created
@@ -304,6 +303,12 @@ let app = new Vue({
     this.getAdmin()
     // this.modal.open()
   },
+
+  watch: {
+    in_lab: function(val) {
+      this.setStorage()
+    }
+  }
 
 })
 

@@ -116,3 +116,15 @@ main {
 .container.wide {
   width: 90%;
 }
+
+.list-container.list-container {
+  padding: 0 4px;
+}
+
+.in-lab {
+  color: #777;
+}
+
+.in-lab::after {
+  content: "~";
+}
