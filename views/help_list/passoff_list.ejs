@@ -4,7 +4,8 @@
   </li>
 
   <li v-for="passoffUser in passoffUsers" class="collection-item">
-    {{ passoffUser.name }}
+    <span v-if="admin && passoffUser.in_lab" class="in-lab">{{ passoffUser.name }}</span>
+    <span v-else>{{ passoffUser.name }}</span>
     <% if (admin) { %>
     <a class="secondary-content" href="#" v-on:click="adminRemovePassoff(passoffUser.name)">
       remove
