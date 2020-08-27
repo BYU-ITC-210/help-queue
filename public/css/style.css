@@ -128,3 +128,16 @@ main {
 .in-lab::after {
   content: "~";
 }
+
+.brand-logo-small.brand-logo-small {
+  left: unset;
+  transform: unset;
+}
+
+.show-list-dots.show-list-dots {
+  padding-left: 40px;
+}
+
+.show-list-dots.show-list-dots > li {
+  list-style-type: initial;
+}
