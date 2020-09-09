@@ -6,6 +6,7 @@ let app = new Vue({
     error: false,
     error_message: "",
     nonce: "",
+    user: {zoom: ""}
 
   },
 
@@ -23,6 +24,9 @@ let app = new Vue({
         if (response.status !== 200) {
           throw new Error("Bad login")
         }
+        let user = JSON.parse(localStorage.getItem("user"))
+        user.zoom = this.user.zoom
+        localStorage.setItem("user", JSON.stringify(user))
         window.location.replace("/")
       }).catch(err => {
         this.error = true
