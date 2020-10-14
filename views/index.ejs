@@ -1,12 +1,14 @@
-<h1>Help Queue
-  <% if (admin) { %>
-  | Admin
-  <% } %>
-</h1>
-
-<%- include("help_list/instructions.ejs") %>
-
 <div id="app">
+
+  <h1>Help Queue
+    <% if (admin) { %>
+    | Admin
+    <% } %>
+    | {{user.name}}
+  </h1>
+  <h5 v-if="user.zoom"><a v-bind:href="user.zoom">{{user.zoom}}</a></h5>
+
+  <%- include("help_list/instructions.ejs") %>
 
   <div v-if="set">
     <div v-if="!onList" class="switch">
