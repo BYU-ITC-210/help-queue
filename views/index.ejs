@@ -6,7 +6,7 @@
     <% } %>
     | {{user.name}}
   </h1>
-  <h5 v-if="user.zoom"><a v-bind:href="user.zoom">{{user.zoom}}</a></h5>
+  <h5 v-if="user.zoom"><a :href="user.zoom" target="_blank">{{user.zoom}}</a></h5>
 
   <%- include("help_list/instructions.ejs") %>
 
