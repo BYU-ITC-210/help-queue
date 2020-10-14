@@ -61,6 +61,20 @@
     </div>
   </div>
 
+  <div id="ta-modal" class="modal">
+    <div class="modal-content">
+      <h4>Currently helping!</h4>
+      <p>You are currently helping <strong> {{ student.name }} </strong> </p>
+      <p>(Help topic: <strong> {{ student.subject }}</strong>) </p>
+      <p v-if="user.in_lab && student.in_lab">Because both you and the student are in the lab, you must try and find them in the lab.</p>
+      <p v-else>They will join your Zoom meeting at <a target="_blank" :href="user.zoom"> <strong> {{ user.zoom }} </strong> </a>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect btn-flat">Close</a>
+    </div>
+  </div>
+
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>

@@ -14,6 +14,12 @@ let app = new Vue({
       subject: "",
       in_lab: false,
     },
+    student: {
+      zoom: "",
+      name: "",
+      subject: "",
+      in_lab: false,
+    },
     ta: {
       name: "The TA",
       zoom: "example.com",
@@ -74,7 +80,12 @@ let app = new Vue({
     adminRemoveHelp(name) {
       this.helpUsers.map(item => {
         if (item.name === name) {
+          this.student = item
           console.info(`Removing %c${item.name} %cfrom Help List %c\n${item.zoom}%c; wants help with %c${item.subject}`, 'font-weight: bold;', '', 'font-weight: bold;', '', 'font-weight: bold;')
+          if (item.in_lab && this.user.in_lab) {
+            console.info(`They are in the lab. GO FIND THEM!`)
+          }
+          this.ta_modal.open()
         }
       })
       url = "api/help/remove"
@@ -100,7 +111,12 @@ let app = new Vue({
     adminRemovePassoff(name) {
       this.passoffUsers.map(item => {
         if (item.name === name) {
+          this.student = item
           console.info(`Removing %c${item.name} %cfrom Passoff List %c\n${item.zoom}`, 'font-weight: bold;', '', 'font-weight: bold;')
+          if (item.in_lab && this.user.in_lab) {
+            console.info(`They are in the lab. GO FIND THEM!`)
+          }
+          this.ta_modal.open()
         }
       })
       url = "api/passoff/remove"
@@ -327,10 +343,22 @@ socket.on("removed", (data) => {
 document.addEventListener('DOMContentLoaded', function() {
   let elems = document.querySelectorAll('.modal')
   let options = {}
-  let instances = M.Modal.init(elems, options)
+  M.Modal.init(elems, options)
   //
-  let elem = document.querySelector("#modal")
-  app.modal = M.Modal.getInstance(elem)
+  let modal = document.querySelector("#modal")
+  app.modal = M.Modal.getInstance(modal)
+  let ta_modal = document.querySelector("#ta-modal")
+  app.ta_modal = M.Modal.getInstance(ta_modal)
+
+  document.querySelector("#carousel")
+  let c = M.Carousel.init(document.querySelector("#carousel"), {
+    fullWidth: true,
+    indicators: true
+  })
+  carousel.style.height=""
+  const interval = setInterval(function() {
+    c.next()
+  }, 10000)
 })
 
 function leave() {

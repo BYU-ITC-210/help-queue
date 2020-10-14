@@ -141,3 +141,15 @@ main {
 .show-list-dots.show-list-dots > li {
   list-style-type: initial;
 }
+
+li.indicator-item.indicator-item.indicator-item {
+  background-color: var(--secondary-dark);
+}
+
+li.indicator-item.active.indicator-item.active {
+  background-color: var(--secondary-light);
+}
+
+#carousel {
+  height: 100px;
+}
