@@ -8,14 +8,7 @@
     <div v-else>{{ helpUser.name }}</div>
 
     <div>
-      <!-- <span class="subject">{{ helpUser.subject }}</span> &nbsp; -->
-      <!-- <span v-if="helpUser.subject.length < max_subject_len" class="subject"> -->
         {{ helpUser.subject }}
-      <!-- </span> -->
-      <!-- <div v-else class="tooltip subject">{{ helpUser.subject.substr(0, max_subject_len) }}... -->
-        <!-- <span class="tooltiptext">{{ helpUser.subject }}</span> -->
-        <!-- <span class="tooltiptext">{{ helpUser.subject }}</span> -->
-      <!-- </div> &nbsp; -->
     </div>
     <div>
       <% if (admin) { %>
@@ -25,14 +18,14 @@
         remove
       </a>
       <% } %>
-    </span>
+    </div>
   </li>
 
   <% if (!admin) { %>
   <li v-if="!onList" class="collection-item">
     <!-- <a href="#" v-on:click="joinHelp()">Join Help List</a> -->
     <form class="row" v-on:submit.prevent="joinHelp">
-      <input class="col s6" required v-model="subject" placeholder="Subect">
+      <input class="col s6" required v-model="user.subject" placeholder="Subect">
       <button class="join col s6" type="submit">Join Help List</button>
     </form>
   </li>

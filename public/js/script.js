@@ -3,16 +3,15 @@ let app = new Vue({
 
   // data
   data: {
-    max_subject_len: 20,
     error_message: "",
     helpUsers: [],
     passoffUsers: [],
     admins: [],
     set: false,
-    subject: "",
     user: {
       zoom: "",
       name: "",
+      subject: "",
       in_lab: false,
     },
     ta: {
@@ -75,7 +74,7 @@ let app = new Vue({
     adminRemoveHelp(name) {
       this.helpUsers.map(item => {
         if (item.name === name) {
-          console.info(`Removing %c${item.name} %cfrom Help List %c\n${item.zoom}`, 'font-weight: bold;', '', 'font-weight: bold;')
+          console.info(`Removing %c${item.name} %cfrom Help List %c\n${item.zoom}%c; wants help with %c${item.subject}`, 'font-weight: bold;', '', 'font-weight: bold;', '', 'font-weight: bold;')
         }
       })
       url = "api/help/remove"
@@ -150,7 +149,7 @@ let app = new Vue({
       console.log(this.user)
       fetch(url, {
         method: "PUT",
-        body: JSON.stringify({...this.user, subject: this.subject}),
+        body: JSON.stringify(this.user),
         headers: {"Content-Type": "application/json"}
       }).then(response => {
         socket.emit("updateList")
