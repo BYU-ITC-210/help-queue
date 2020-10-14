@@ -10,6 +10,11 @@ let app = new Vue({
 
   },
 
+  created() {
+    let user = JSON.parse(localStorage.getItem("user")) || {}
+    this.zoom = user.zoom
+  },
+
   methods: {
 
     // login()
