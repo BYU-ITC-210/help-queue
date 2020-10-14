@@ -4,22 +4,24 @@
   </li>
 
   <li v-for="helpUser in helpUsers" class="collection-item">
-    <span v-if="admin && helpUser.in_lab" class="in-lab">{{ helpUser.name }}</span>
-    <span v-else>{{ helpUser.name }}</span>
+    <div v-if="admin && helpUser.in_lab" class="in-lab">{{ helpUser.name }}</div>
+    <div v-else>{{ helpUser.name }}</div>
 
-    <span class="secondary-content">
+    <div>
       <!-- <span class="subject">{{ helpUser.subject }}</span> &nbsp; -->
-      <span v-if="helpUser.subject.length < max_subject_len" class="subject">
+      <!-- <span v-if="helpUser.subject.length < max_subject_len" class="subject"> -->
         {{ helpUser.subject }}
-      </span>
-      <div v-else class="tooltip subject">{{ helpUser.subject.substr(0, max_subject_len) }}...
+      <!-- </span> -->
+      <!-- <div v-else class="tooltip subject">{{ helpUser.subject.substr(0, max_subject_len) }}... -->
         <!-- <span class="tooltiptext">{{ helpUser.subject }}</span> -->
-        <span class="tooltiptext">{{ helpUser.subject }}</span>
-      </div> &nbsp;
+        <!-- <span class="tooltiptext">{{ helpUser.subject }}</span> -->
+      <!-- </div> &nbsp; -->
+    </div>
+    <div>
       <% if (admin) { %>
       <a href="#" v-on:click="adminRemoveHelp(helpUser.name)">remove</a>
       <% } else { %>
-      <a v-if="helpUser.name === user.name" class="secondary-content" href="#" v-on:click="removeHelp()">
+      <a v-if="helpUser.name === user.name" href="#" v-on:click="removeHelp()">
         remove
       </a>
       <% } %>

@@ -75,7 +75,7 @@ let app = new Vue({
     adminRemoveHelp(name) {
       this.helpUsers.map(item => {
         if (item.name === name) {
-          console.info(`Removing %c${item.name} %cfrom Help List %c\n${item.zoom}`, 'font-weight: bold; color: white;', '', 'font-weight: bold; color: white;')
+          console.info(`Removing %c${item.name} %cfrom Help List %c\n${item.zoom}`, 'font-weight: bold;', '', 'font-weight: bold;')
         }
       })
       url = "api/help/remove"
@@ -239,8 +239,8 @@ let app = new Vue({
 
     playRemove(data) {
       name = data.name
-      this.ta = data.ta
       if (this.user.name === name) {
+        this.ta = data.ta
         this.audio.play()
         this.modal.open()
       }
