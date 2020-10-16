@@ -1,6 +1,6 @@
 <ul class="collection with-header">
   <li class="collection-header">
-    <h4>Help List</h4>
+    <h4>Machine List</h4>
   </li>
 
   <li v-for="helpUser in helpUsers" class="collection-item">
@@ -25,7 +25,26 @@
   <li v-if="!onList" class="collection-item">
     <!-- <a href="#" v-on:click="joinHelp()">Join Help List</a> -->
     <form class="row" v-on:submit.prevent="joinHelp">
-      <input class="col s6" required v-model="user.subject" placeholder="Subect">
+      
+      <label>Browser</label>
+      <select v-model="user.subject" class="browser-default">
+        <option value="" disabled selected>Choose your option</option>
+        <option v-for="machine in availableMachines.filter(machine => machine.available)" :value="machine.name">
+          {{ machine.name }}
+        </option>
+        <!-- <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
+        <option value="3">Option 3</option> -->
+      </select>
+
+
+      <!-- <select v-model="user.subject">
+        <option v-for="machine in availableMachines">
+          {{ machine.name }}
+        </option>
+      </select> -->
+      <!-- <input type="hidden" required v-model="user.subject"> -->
+      <span style="visibility: hidden;">{{ user.subject }}</span>
       <button class="join col s6" type="submit">Join Help List</button>
     </form>
   </li>

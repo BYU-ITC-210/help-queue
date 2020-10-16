@@ -1,45 +1,29 @@
 <div id="app">
 
-  <h1>Help Queue
+  <h1>Microsoft Spreadsheet
     <% if (admin) { %>
     | Admin
     <% } %>
     | {{user.name}}
   </h1>
-  <h5 v-if="user.zoom"><a :href="user.zoom" target="_blank">{{user.zoom}}</a></h5>
 
-  <%- include("help_list/instructions.ejs") %>
+  <%- // include("help_list/instructions.ejs") %>
+  <%- include("help_list/machines.ejs") %>
 
   <div v-if="set">
-    <div v-if="!onList" class="switch">
-      <label>
-        Remote
-        <input type="checkbox" v-model="user.in_lab">
-        <span class="lever"></span>
-        In Lab
-      </label>
-    </div>
-    <div v-else class="switch">
-      <label>
-        Remote
-        <input disabled type="checkbox" v-model="user.in_lab">
-        <span class="lever"></span>
-        In Lab
-      </label>
-    </div>
     <div class="row">
-      <div class="list-container col l4 m6 s12">
-        <%- include("help_list/passoff_list.ejs") %>
-      </div>
+      <!-- <div class="list-container col l4 m6 s12">
+        <%- // include("help_list/passoff_list.ejs") %>
+      </div> -->
 
-      <div class="list-container col l4 m6 s12">
+      <div class="list-container col s12">
         <%- include("help_list/help_list.ejs") %>
       </div>
 
 
-      <div class="list-container col l4 m6 s12">
-        <%- include("help_list/ta_list.ejs") %>
-      </div>
+      <!-- <div class="list-container col l6 m6 s12">
+        <%- // include("help_list/ta_list.ejs") %>
+      </div> -->
 
     </div>
   </div>
@@ -54,20 +38,6 @@
       <p>You are currently being helped by <strong> {{ ta.name }} </strong> </p>
       <p v-if="user.in_lab && ta.in_lab">Because both you and the TA are in the lab, the TA <strong>{{ta.name}}</strong> will try and find you in the lab.</p>
       <p v-else>You can join their Zoom meeting at <a target="_blank" :href="ta.zoom"> <strong> {{ ta.zoom }} </strong> </a>
-      </p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect btn-flat">Close</a>
-    </div>
-  </div>
-
-  <div id="ta-modal" class="modal">
-    <div class="modal-content">
-      <h4>Currently helping!</h4>
-      <p>You are currently helping <strong> {{ student.name }} </strong> </p>
-      <p>(Help topic: <strong> {{ student.subject }}</strong>) </p>
-      <p v-if="user.in_lab && student.in_lab">Because both you and the student are in the lab, you must try and find them in the lab.</p>
-      <p v-else>They will join your Zoom meeting at <a target="_blank" :href="user.zoom"> <strong> {{ user.zoom }} </strong> </a>
       </p>
     </div>
     <div class="modal-footer">

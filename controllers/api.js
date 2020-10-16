@@ -4,27 +4,14 @@ let router = express.Router()
 let nonce
 
 let helpUsers = [
-  {
-    name: "No admin",
-    zoom: "...",
-    subject: ""
-  },
 ]
 
-// passoffUsers
-let passoffUsers = [
-  {
-    name: "No admin",
-    zoom: "..."
-  },
-]
-
-// passoffUsers
-let admins = [
-  {
-    name: "No admin",
-    zoom: "..."
-  },
+let availableMachines = [
+  "192.168.135.135",
+  "192.168.135.136",
+  "192.168.135.138",
+  "192.168.135.140",
+  "192.168.135.150",
 ]
 
 // Register            | post | /user/register
@@ -33,9 +20,6 @@ let admins = [
 // Add to help         | put  | /help/add
 // Remove from help    | put  | /help/remove
 // Get help list       | get  | /help
-// Add to passoff      | put  | /passoff/add
-// Remove from passoff | put  | /passoff/remove
-// Get passoff list    | get  | /passoff
 
 function getSmallUser(user) {
   return {
@@ -98,41 +82,11 @@ router.put("/admin/logout", async (req, res) => {
 // Add to help         | put  | /help/add
 router.put("/help/add", async (req, res) => {
   let name = req.body.name
-  let subject = req.body.subject
-  if (passoffUsers.some(item => item.name === name)) {
-    res.sendStatus(500)
-    return
-  }
   if (helpUsers.some(item => item.name === name)) {
     res.sendStatus(500)
     return
   }
   helpUsers.push(getSmallUser(req.body))
-  res.sendStatus(200)
-})
-
-// Add to passoff         | put  | /passoff/add
-router.put("/passoff/add", async (req, res) => {
-  let name = req.body.name
-  if (passoffUsers.some(item => item.name === name)) {
-    res.sendStatus(500)
-    return
-  }
-  if (helpUsers.some(item => item.name === name)) {
-    res.sendStatus(500)
-    return
-  }
-  passoffUsers.push(getSmallUser(req.body))
-  res.sendStatus(200)
-})
-
-router.put("/admins/add", async (req, res) => {
-  let name = req.body.name
-  if (admins.some(item => item.name === name)) {
-    res.sendStatus(500)
-    return
-  }
-  admins.push(getSmallUser(req.body))
   res.sendStatus(200)
 })
 
@@ -143,31 +97,14 @@ router.put("/help/remove", async (req, res) => {
   res.sendStatus(200)
 })
 
-// Remove from passoff    | put  | /passoff/remove
-router.put("/passoff/remove", async (req, res) => {
-  let name = req.body.name
-  passoffUsers = passoffUsers.filter(item => item.name !== name)
-  res.sendStatus(200)
-})
-
-router.put("/admins/remove", async (req, res) => {
-  let name = req.body.name
-  admins = admins.filter(item => item.name !== name)
-  res.sendStatus(200)
-})
-
 // Get help list       | get  | /help
 router.get("/help", async (req, res) => {
   res.send(JSON.stringify(helpUsers))
 })
 
-// Get passoff list       | get  | /passoff
-router.get("/passoff", async (req, res) => {
-  res.send(JSON.stringify(passoffUsers))
-})
-
-router.get("/admins", async (req, res) => {
-  res.send(JSON.stringify(admins))
+// Get help list       | get  | /help
+router.get("/available", async (req, res) => {
+  res.send(JSON.stringify(availableMachines))
 })
 
 module.exports = router

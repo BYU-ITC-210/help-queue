@@ -5,8 +5,7 @@ let app = new Vue({
   data: {
     error_message: "",
     helpUsers: [],
-    passoffUsers: [],
-    admins: [],
+    machines: [],
     set: false,
     user: {
       zoom: "",
@@ -33,6 +32,11 @@ let app = new Vue({
   // methods
   methods: {
 
+    setSubject(subject) {
+      console.debug(`setSubject(${subject})`)
+      this.user.subject = subject
+    },
+
     // getHelpList()
     getHelpList() {
       url = "api/help"
@@ -45,25 +49,13 @@ let app = new Vue({
       })
     },
 
-    // getPassoffList()
-    getPassoffList() {
-      url = "api/passoff"
+    // getMachineList()
+    getMachineList() {
+      url = "api/available"
       fetch(url).then(response => {
         return response.json()
       }).then(json => {
-        this.passoffUsers = json
-      }).catch(err => {
-        console.error(err)
-      })
-    },
-
-    // getPassoffList()
-    getAdminList() {
-      url = "api/admins"
-      fetch(url).then(response => {
-        return response.json()
-      }).then(json => {
-        this.admins = json
+        this.machines = json
       }).catch(err => {
         console.error(err)
       })
@@ -72,8 +64,7 @@ let app = new Vue({
     // getLists()
     getLists() {
       this.getHelpList()
-      this.getPassoffList()
-      this.getAdminList()
+      this.getMachineList()
     },
 
     // adminRemoveHelp()
@@ -81,11 +72,8 @@ let app = new Vue({
       this.helpUsers.map(item => {
         if (item.name === name) {
           this.student = item
-          console.info(`Removing %c${item.name} %cfrom Help List %c\n${item.zoom}%c; wants help with %c${item.subject}`, 'font-weight: bold;', '', 'font-weight: bold;', '', 'font-weight: bold;')
-          if (item.in_lab && this.user.in_lab) {
-            console.info(`They are in the lab. GO FIND THEM!`)
-          }
-          this.ta_modal.open()
+          console.info(`Removing %c${item.name} %cfrom list`, 'font-weight: bold;', '')
+
         }
       })
       url = "api/help/remove"
@@ -107,58 +95,6 @@ let app = new Vue({
       })
     },
 
-    // adminRemovePassoff()
-    adminRemovePassoff(name) {
-      this.passoffUsers.map(item => {
-        if (item.name === name) {
-          this.student = item
-          console.info(`Removing %c${item.name} %cfrom Passoff List %c\n${item.zoom}`, 'font-weight: bold;', '', 'font-weight: bold;')
-          if (item.in_lab && this.user.in_lab) {
-            console.info(`They are in the lab. GO FIND THEM!`)
-          }
-          this.ta_modal.open()
-        }
-      })
-      url = "api/passoff/remove"
-      fetch(url, {
-        method: "PUT",
-        body: JSON.stringify({name: name}),
-        headers: {"Content-Type": "application/json"}
-      }).then(response => {
-        if (response.status !== 200) {
-          throw new Error("Bad remove")
-        }
-        socket.emit("updateList")
-        socket.emit("removed", {
-          name: name,
-          ta: this.user,
-        })
-      }).catch(err => {
-        console.error(err)
-      })
-    },
-
-    adminRemoveAdmin(name) {
-      this.admins.map(item => {
-        if (item.name === name) {
-          console.info(`Removing %c${item.name} %cfrom Admin List`, 'font-weight: bold;', '')
-        }
-      })
-      url = "api/admins/remove"
-      fetch(url, {
-        method: "PUT",
-        body: JSON.stringify({name: name}),
-        headers: {"Content-Type": "application/json"}
-      }).then(response => {
-        if (response.status !== 200) {
-          throw new Error("Bad remove")
-        }
-        socket.emit("updateList")
-      }).catch(err => {
-        console.error(err)
-      })
-    },
-
     // joinHelp()
     joinHelp() {
       url = "api/help/add"
@@ -170,35 +106,6 @@ let app = new Vue({
       }).then(response => {
         socket.emit("updateList")
         socket.emit("playSound")
-      }).catch(err => {
-        console.error(err)
-      })
-    },
-
-    // joinPassoff()
-    joinPassoff() {
-      url = "api/passoff/add"
-      fetch(url, {
-        method: "PUT",
-        body: JSON.stringify(this.user),
-        headers: {"Content-Type": "application/json"}
-      }).then(response => {
-        socket.emit("updateList")
-        socket.emit("playSound")
-      }).catch(err => {
-        console.error(err)
-      })
-    },
-
-    // joinPassoff()
-    joinAdmin() {
-      url = "api/admins/add"
-      fetch(url, {
-        method: "PUT",
-        body: JSON.stringify(this.user),
-        headers: {"Content-Type": "application/json"}
-      }).then(response => {
-        socket.emit("updateList")
       }).catch(err => {
         console.error(err)
       })
@@ -221,43 +128,11 @@ let app = new Vue({
       })
     },
 
-    // removePassoff()
-    removePassoff() {
-      url = "api/passoff/remove"
-      fetch(url, { 
-        method: "PUT",
-        body: JSON.stringify(this.user),
-        headers: {"Content-Type": "application/json"}
-      }).then(response => {
-        if (response.status !== 200) {
-          throw new Error("Bad")
-        }
-        socket.emit("updateList")
-      }).catch(err => {
-        console.error(err)
-      })
-    },
-
     getStorage() {
       this.user = JSON.parse(localStorage.getItem("user")) || { name: "", zoom: "", in_lab: false }
       this.set = false
       if (this.user.name) {
         this.set = true
-      }
-    },
-
-    playAdd() {
-      if (this.admin) {
-        this.audio.play()
-      }
-    },
-
-    playRemove(data) {
-      name = data.name
-      if (this.user.name === name) {
-        this.ta = data.ta
-        this.audio.play()
-        this.modal.open()
       }
     },
 
@@ -289,20 +164,21 @@ let app = new Vue({
   // computed
   computed: {
 
+    availableMachines: function() {
+      return this.machines.map(machine => {
+        return {
+          "name": machine,
+          "available": !this.helpUsers.some(user => user.subject === machine),
+        }
+      })
+    },
+
     onHelpList: function() {
       return this.helpUsers.some(item => item.name === this.user.name)
     },
 
-    onPassoffList: function() {
-      return this.passoffUsers.some(item => item.name === this.user.name)
-    },
-
-    onAdminList: function() {
-      return this.admins.some(item => item.name === this.user.name)
-    },
-
     onList: function() {
-      return this.onHelpList || this.onPassoffList
+      return this.onHelpList
     },
 
     in_lab: function() {
@@ -316,7 +192,6 @@ let app = new Vue({
     this.getStorage()
     this.getLists()
     this.getAdmin()
-    // this.modal.open()
   },
 
   watch: {
@@ -333,11 +208,11 @@ socket.on("updateList", (data) => {
 })
 
 socket.on("playSound", (data) => {
-  app.playAdd()
+  // app.playAdd()
 })
 
 socket.on("removed", (data) => {
-  app.playRemove(data)
+  // app.playRemove(data)
 })
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -347,18 +222,9 @@ document.addEventListener('DOMContentLoaded', function() {
   //
   let modal = document.querySelector("#modal")
   app.modal = M.Modal.getInstance(modal)
-  let ta_modal = document.querySelector("#ta-modal")
-  app.ta_modal = M.Modal.getInstance(ta_modal)
 
-  document.querySelector("#carousel")
-  let c = M.Carousel.init(document.querySelector("#carousel"), {
-    fullWidth: true,
-    indicators: true
-  })
-  carousel.style.height=""
-  const interval = setInterval(function() {
-    c.next()
-  }, 10000)
+  let selects = document.querySelectorAll('select');
+  instances = M.FormSelect.init(selects, options);
 })
 
 function leave() {

@@ -153,3 +153,7 @@ li.indicator-item.active.indicator-item.active {
 #carousel {
   height: 100px;
 }
+
+.unavailable {
+  color: #777;
+}
