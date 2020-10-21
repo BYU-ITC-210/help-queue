@@ -1,7 +1,6 @@
 let app = new Vue({
   el: "#app",
 
-  // data
   data: {
     error_message: "",
     helpUsers: [],
@@ -29,7 +28,6 @@ let app = new Vue({
     modal: undefined,
   },
 
-  // methods
   methods: {
 
     setSubject(subject) {
@@ -37,7 +35,6 @@ let app = new Vue({
       this.user.subject = subject
     },
 
-    // getHelpList()
     getHelpList() {
       url = "api/help"
       fetch(url).then(response => {
@@ -49,7 +46,6 @@ let app = new Vue({
       })
     },
 
-    // getMachineList()
     getMachineList() {
       url = "api/available"
       fetch(url).then(response => {
@@ -61,13 +57,11 @@ let app = new Vue({
       })
     },
 
-    // getLists()
     getLists() {
       this.getHelpList()
       this.getMachineList()
     },
 
-    // adminRemoveHelp()
     adminRemoveHelp(name) {
       this.helpUsers.map(item => {
         if (item.name === name) {
@@ -95,7 +89,6 @@ let app = new Vue({
       })
     },
 
-    // joinHelp()
     joinHelp() {
       url = "api/help/add"
       console.log(this.user)
@@ -111,7 +104,6 @@ let app = new Vue({
       })
     },
 
-    // removeHelp()
     removeHelp() {
       url = "api/help/remove"
       fetch(url, {
@@ -154,14 +146,10 @@ let app = new Vue({
     setup() {
       this.setStorage()
       this.getStorage()
-      // get first and last names
-      // store them in local storage
-      // check that it's set up
     },
 
   },
 
-  // computed
   computed: {
 
     availableMachines: function() {
@@ -187,7 +175,6 @@ let app = new Vue({
 
   },
 
-  // created
   created: function() {
     this.getStorage()
     this.getLists()
@@ -197,6 +184,10 @@ let app = new Vue({
   watch: {
     in_lab: function(val) {
       this.setStorage()
+    },
+
+    'user.subject': function(val) {
+      this.joinHelp()
     }
   }
 
