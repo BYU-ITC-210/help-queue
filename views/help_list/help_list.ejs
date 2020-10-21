@@ -26,7 +26,6 @@
     <!-- <a href="#" v-on:click="joinHelp()">Join Help List</a> -->
     <form class="row" v-on:submit.prevent="joinHelp">
       
-      <label>Browser</label>
       <select v-model="user.subject" class="browser-default">
         <option value="" disabled selected>Choose your option</option>
         <option v-for="machine in availableMachines.filter(machine => machine.available)" :value="machine.name">
