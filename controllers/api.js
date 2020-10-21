@@ -6,13 +6,7 @@ let nonce
 let helpUsers = [
 ]
 
-let availableMachines = [
-  "192.168.135.135",
-  "192.168.135.136",
-  "192.168.135.138",
-  "192.168.135.140",
-  "192.168.135.150",
-]
+let availableMachines = require("./servers")
 
 // Register            | post | /user/register
 // Login               | put  | /user/login

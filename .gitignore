@@ -139,3 +139,5 @@ node_modules
 # macOS files
 
 .DS_Store
+
+controllers/servers.js
