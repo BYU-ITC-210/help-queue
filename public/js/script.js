@@ -94,7 +94,7 @@ let app = new Vue({
       console.log(this.user)
       fetch(url, {
         method: "PUT",
-        body: JSON.stringify(this.user),
+        body: JSON.stringify({...this.user, date: new Date().toString()}),
         headers: {"Content-Type": "application/json"}
       }).then(response => {
         socket.emit("updateList")
@@ -187,7 +187,9 @@ let app = new Vue({
     },
 
     'user.subject': function(val) {
-      this.joinHelp()
+      if (val) {
+        this.joinHelp()
+      }
     }
   }
 

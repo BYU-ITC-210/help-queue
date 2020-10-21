@@ -20,7 +20,8 @@ function getSmallUser(user) {
     name: user.name,
     zoom: user.zoom,
     subject: user.subject,
-    in_lab: user.in_lab || false
+    in_lab: user.in_lab || false,
+    date: user.date
   }
 }
 
